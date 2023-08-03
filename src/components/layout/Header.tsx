@@ -1,33 +1,24 @@
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
+import { Div } from "../global/StyledElements";
 
-const HeaderDiv = styled.div`
-    
+const HeaderDiv = styled(Div)`
+    position: absolute;
+    left: 0px;
+    top: 0px;
 `;
 
-const LinkHome = styled(Link)`
-    
-`;
-
-const LinkLogin = styled(Link)`
-    
-`;
-
-const LinkLogout = styled(Link)`
-    
-`;
-
-const LinkRegister = styled(Link)`
+const HeaderLink = styled(Link)`
     
 `;
 
 const Header = () => {
     return (
         <HeaderDiv>
-            <LinkHome to='/'>홈</LinkHome>
-            <LinkLogin to='/login'>홈</LinkLogin>
-            <LinkLogout to='/logout'>홈</LinkLogout>
-            <LinkRegister to='/register'>홈</LinkRegister>
+            <HeaderLink to='/'>홈</HeaderLink>
+            <HeaderLink to='/login'>로그인</HeaderLink>
+            <HeaderLink to='/logout'>로그아웃</HeaderLink>
+            <HeaderLink to='/register'>회원가입</HeaderLink>
         </HeaderDiv>
     );
 }

@@ -1,8 +1,9 @@
 import { styled } from "styled-components";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
+import { Div } from "../global/StyledElements";
 
-const HomeDiv = styled.div`
+const HomeDiv = styled(Div)`
     
 `;
 

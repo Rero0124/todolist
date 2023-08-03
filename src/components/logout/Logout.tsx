@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
+import { Div } from "../global/StyledElements";
 
-const LogoutDiv = styled.div`
+const LogoutDiv = styled(Div)`
     
 `;
 

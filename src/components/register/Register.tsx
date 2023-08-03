@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
+import { Div } from "../global/StyledElements";
 
-const RegisterDiv = styled.div`
+const RegisterDiv = styled(Div)`
     
 `;
 
