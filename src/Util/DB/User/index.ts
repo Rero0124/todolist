@@ -1,55 +1,63 @@
-import Prisma from "..";
+import prisma from "..";
 
-const prisma = Prisma
-
-export const createUser = (userInfo: UserType) => {
-    return prisma.user.create({
+export const createUser = async (userInfo: UserType): Promise<UserType> => {
+    let result: UserType = {userId: '', userPw: '', salt: '', sessionId: null};
+    await prisma.user.create({
         data: {
-            id: userInfo.id,
-            pw: userInfo.pw,
+            userId: userInfo.userId,
+            userPw: userInfo.userPw,
             salt: userInfo.salt,
+            sessionId: userInfo.sessionId,
         },
-    }).then(data => {return data})
-    .catch(err => err)
-}
-
-export const modifyUser = (userInfo: UserType): UserType => {
-    let result: UserType = {id: '', pw: '', salt: ''};
-    prisma.user.update({
-        data: {
-            pw: userInfo.pw,
-            salt: userInfo.salt,
-        },
-        where: {
-            id: userInfo.id
-        },
-    }).then(data => result = data as UserType)
-    .catch(err => {throw new Error(err)})
+    }).then((data: UserType) => { result = data })
+    .catch((err: Error) => { throw err })
     return result;
 }
 
-export const getUser = (id: string) => {
-    prisma.user.findMany({
-        where: {
-            id: id,
+export const modifyUser = async (userInfo: UserType): Promise<UserType> => {
+    let result: UserType = {userId: '', userPw: '', salt: '', sessionId: null};
+    await prisma.user.update({
+        data: {
+            userPw: userInfo.userPw,
+            salt: userInfo.salt,
         },
-    }).then(data => data)
-    .catch(err => err)
+        where: {
+            userId: userInfo.userId,
+        },
+    }).then((data: UserType) => { result = data })
+    .catch((err: Error) => { throw err })
+    return result;
 }
 
-export const getAllUser = () => {
-    
-    prisma.user.findMany()
-    .then(data => data)
-    .catch(err => err)
+export const modifyUserSessionId = async (userInfo: UserType): Promise<UserType> => {
+    let result: UserType = {userId: '', userPw: '', salt: '', sessionId: null};
+    await prisma.user.update({
+        data: {
+            sessionId: userInfo.sessionId,
+        },
+        where: {
+            userId: userInfo.userId,
+        },
+    }).then((data: UserType) => { result = data })
+    .catch((err: Error) => { throw err })
+    return result;
 }
 
-export const loginUser = (userInfo: UserType) => {
-    prisma.user.count({
+export const getUser = async (userId: string): Promise<UserType> => {
+    let result: UserType = {userId: '', userPw: '', salt: '', sessionId: null};
+    await prisma.user.findUnique({
         where: {
-            id: userInfo.id,
-            pw: userInfo.pw,
+            userId: userId,
         },
-    }).then(data => data)
-    .catch(err => err)
+    }).then((data: UserType | null) => { result = data ?? result })
+    .catch((err: Error) => { throw err })
+    return result;
+}
+
+export const getAllUser = async (): Promise<UserType[]> => {
+    let result: UserType[] = [];
+    await prisma.user.findMany()
+    .then((data: UserType[]) => { result = data })
+    .catch((err: Error) => { throw err })
+    return result;
 }

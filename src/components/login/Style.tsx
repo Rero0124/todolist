@@ -16,15 +16,15 @@ export const LoginInput = styled(Input)`
     height: 50px;
 `;
 
-export const SubTd = styled.td`
+export const LoginSubTd = styled.td`
     width: 30%;
 `;
 
-export const InputTd = styled.td`
+export const LoginInputTd = styled.td`
     width: 70%;
 `;
 
-export const ButtonTd = styled.td`
+export const LoginButtonTd = styled.td`
     width: 100%;
     text-align: center;
 `

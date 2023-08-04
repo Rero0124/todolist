@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { styled } from 'styled-components';
 import Home from './components/home/Home';
@@ -17,9 +16,16 @@ function App() {
 			<AppDiv>
 				<Routes>
 					<Route path='/' element={<Home />}/>
-					<Route path='/login' element={<Login />}/>
-					<Route path='/logout' element={<Logout />}/>
-					<Route path='/register' element={<Register />}/>
+					{ localStorage.getItem('userId') ? (
+						<>
+							<Route path='/logout' element={<Logout />}/>
+						</>
+						) : (
+						<>
+							<Route path='/login' element={<Login />}/>
+							<Route path='/register' element={<Register />}/>
+						</> ) 
+					}
 					<Route path='*' element={<NotFound />}/>
 				</Routes>
 			</AppDiv>
