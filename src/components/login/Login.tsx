@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { LoginDiv, LoginTable, LoginInput, LoginButton, FindIdButton, FindPwButton, RegisterButton, LoginButtonTd, LoginSubTd, LoginInputTd } from "./Style";
 import { loginCheck, loginUser } from "../../Util/User";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface LoginInputs extends HTMLFormControlsCollection {
     id: HTMLInputElement;
@@ -50,9 +50,9 @@ const Login = () => {
                     </tr>
                     <tr>
                         <LoginButtonTd colSpan={2}>
-                            <FindIdButton type='button'>아이디찾기</FindIdButton>
-                            <FindPwButton type='button'>비밀번호찾기</FindPwButton>
-                            <RegisterButton type='button'>회원가입</RegisterButton>
+                            <FindIdButton type='button'><Link to='/findId'>아이디찾기</Link></FindIdButton>
+                            <FindPwButton type='button'><Link to='/findPw'>비밀번호찾기</Link></FindPwButton>
+                            <RegisterButton type='button'><Link to='/register'>회원가입</Link></RegisterButton>
                         </LoginButtonTd>
                     </tr>
                 </LoginTable>

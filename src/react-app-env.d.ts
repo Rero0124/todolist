@@ -1,5 +1,4 @@
 /// <reference types="react-scripts" />
-
 declare namespace NodeJS {
 	interface ProcessEnv {
     	NODE_ENV: 'development' | 'production' | 'test';
@@ -20,11 +19,6 @@ interface UserType {
     sessionId: string | null;
 }
 
-interface CryptoType {
-    str: string;
-    salt: string;
-}
-
 interface PostType {
     postId: number;
 	title: string;
@@ -33,13 +27,18 @@ interface PostType {
 	authorId: string;
 }
 
+interface CryptoType {
+    str: string;
+    salt: string;
+}
+
 interface clientLocation {
     country_code: string;
     country_name: string;
     city: string;
     postal: string | null;
-    latitude: double;
-    longitude: double;
+    latitude: number;
+    longitude: number;
     IPv4: string;
     state: string;
 }

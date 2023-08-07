@@ -16,16 +16,9 @@ function App() {
 			<AppDiv>
 				<Routes>
 					<Route path='/' element={<Home />}/>
-					{ localStorage.getItem('userId') ? (
-						<>
-							<Route path='/logout' element={<Logout />}/>
-						</>
-						) : (
-						<>
-							<Route path='/login' element={<Login />}/>
-							<Route path='/register' element={<Register />}/>
-						</> ) 
-					}
+					<Route path='/logout' element={<Logout />}/>
+					<Route path='/login' element={<Login />}/>
+					<Route path='/register' element={<Register />}/>
 					<Route path='*' element={<NotFound />}/>
 				</Routes>
 			</AppDiv>

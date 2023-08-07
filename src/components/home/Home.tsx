@@ -1,11 +1,6 @@
-import { styled } from "styled-components";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
-import { Div } from "../global/StyledElements";
-
-const HomeDiv = styled(Div)`
-    
-`;
+import { HomeDiv } from "./Style";
 
 const Home = () => {
     return (

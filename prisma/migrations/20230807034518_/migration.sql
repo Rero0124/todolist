@@ -3,7 +3,7 @@ CREATE TABLE "user" (
     "userId" TEXT NOT NULL,
     "userPw" TEXT NOT NULL,
     "salt" TEXT NOT NULL,
-    "sessionId" TEXT NOT NULL,
+    "sessionId" TEXT,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("userId")
 );

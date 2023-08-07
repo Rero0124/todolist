@@ -55,7 +55,7 @@ const Register = () => {
                     </tr>
                     <tr>
                         <RegisterButtonTd colSpan={2}>
-                            <RegisterButton>로그인</RegisterButton>
+                            <RegisterButton>회원가입</RegisterButton>
                         </RegisterButtonTd>
                     </tr>
                 </RegisterTable>
