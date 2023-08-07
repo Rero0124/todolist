@@ -3,8 +3,6 @@ import { loginCheck } from "../../Util/User";
 import { useNavigate } from "react-router-dom";
 import { LogoutDiv } from "./style";
 
-
-
 const Logout = () => {
     const navigate = useNavigate();
     useEffect(() => {

@@ -9,12 +9,12 @@ export const loginUser = async (userId: string, userPw: string): Promise<boolean
         method: 'GET',
     }).then(res => res.json()).then((data) => { result = data });
 
-    let userInfo = {userId: userId, userPw: userPw, salt: '', seessionId: null};
+    let userInfo = {userId: userId, userPw: userPw, salt: '', sessionId: ''};
     const encryptoResult = encryptoSHA256(userInfo.userPw, result.result.salt);
     userInfo.userPw = encryptoResult.str;
     userInfo.salt = encryptoResult.salt;
 
-    await fetch(apiUrl + '/login', {
+    await fetch(apiUrl + 'login/', {
         headers: {
             'Content-Type': 'application/json',
         },
@@ -33,7 +33,18 @@ export const loginUser = async (userId: string, userPw: string): Promise<boolean
             const sessionId = encryptoAES(sessionStr, result.result.salt).str;
             localStorage.setItem('userId', userId);
             localStorage.setItem('sessionId', sessionId);
-            return true;
+            userInfo.sessionId = sessionId;
+            await fetch(apiUrl + 'login/', {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: 'PUT',
+                body: JSON.stringify(userInfo),
+            }).then(res => res.json()).then((data) => { result = data });
+            if(result.result) {
+                return true;
+            }
+            return false;
         }
     }
     return false;
@@ -42,7 +53,7 @@ export const loginUser = async (userId: string, userPw: string): Promise<boolean
 export const loginCheck = async (): Promise<boolean> => {
     const userId = localStorage.getItem('userId');
     if(userId) {
-        let result = {message: '', result: {userId: '', userPw: '', salt: '', sessionId: null}};
+        let result = {message: '', result: {userId: '', userPw: '', salt: '', sessionId: ''}};
         await fetch(apiUrl + userId + '/', {
             method: 'GET',
         }).then(res => res.json()).then((data) => { result = data });
@@ -52,15 +63,17 @@ export const loginCheck = async (): Promise<boolean> => {
             const now = Date.now();
             const sessionStr = locationIp.IPv4 + '_' + now;
             const oldSessionStr = decryptoAES(result.result.sessionId!, result.result.salt).str;
+            console.log(result.result)
             if(oldSessionStr.split('_')[0] === locationIp.IPv4 && new Date(parseInt(oldSessionStr.split('_')[1])).valueOf() - now.valueOf() > 3) {
                 const sessionId = encryptoAES(sessionStr, result.result.salt).str;
                 localStorage.setItem('sessionId', sessionId);
                 return true;
             }
         }
+    } else {
+        localStorage.setItem('userId', '');
+        localStorage.setItem('sessionId', '');
     }
-    localStorage.setItem('userId', '');
-    localStorage.setItem('sessionId', '');
     return false;
 }
 

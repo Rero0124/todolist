@@ -53,19 +53,21 @@ router.put('/', async (req: Request, res: Response) => {
     }
 })
 
-router.patch('/', async (req: Request, res: Response) => {
+router.put('/login', async (req: Request, res: Response) => {
     try {
-        let userId = req.body.userId ?? '';
-        let sessionId = req.body.sessionId ?? '';
-        if(userId && sessionId) {
+        let userInfo: UserType = req.body ?? {userId: '', userPw: '', salt: '', sessionId: ''};
+        if(userInfo.userId) {
             const result: UserType = await prisma.user.update({
                 data: {
-                    sessionId: sessionId,
+                    sessionId: userInfo.sessionId,
                 },
                 where: {
-                    userId: userId,
+                    userId: userInfo.userId,
+                    userPw: userInfo.userPw,
                 },
             })
+            console.log(userInfo)
+            console.log(result)
             return res.status(200).json({ message: "user update sessionId success", result: result });
         } else {
             return res.status(400).json({ message: "verification failed" });
@@ -83,12 +85,13 @@ router.get('/:userId', async (req: Request, res: Response) => {
                 select: {
                     userId: true,
                     salt: true,
+                    sessionId: true,
                 },
                 where: {
                     userId: userId,
                 },
             })
-            return res.status(200).json({ message: "post get success", result: result });
+            return res.status(200).json({ message: "user get success", result: result });
         } else {
             return res.status(400).json({ message: "verification failed" });
         }

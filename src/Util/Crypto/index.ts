@@ -6,10 +6,8 @@ const secretKey = process.env.REACT_APP_SECRET_KEY;
 export const encryptoAES = (str: string, originSalt?: string): CryptoType => {
     const salt = originSalt || CryptoJS.lib.WordArray.random(128 / 8).toString(CryptoJS.enc.Hex);
 
-    const base64Str = encodeBase64(str);
-
     const encrypted = AES.encrypt(
-        base64Str,
+        str,
         secretKey,
         {
             iv: CryptoJS.enc.Hex.parse(salt),
@@ -18,7 +16,7 @@ export const encryptoAES = (str: string, originSalt?: string): CryptoType => {
         }
     );
 
-    return {str: encrypted.toString(), salt: salt}
+    return { str: encrypted.toString(), salt: salt }
 }
 export const decryptoAES = (str: string, salt: string): CryptoType => {
     const encrypted = AES.encrypt(
@@ -31,7 +29,7 @@ export const decryptoAES = (str: string, salt: string): CryptoType => {
         }
     );
 
-    return {str: decodeBase64(encrypted.toString()), salt: salt}
+    return { str: encrypted.toString(), salt: salt }
 }
 
 export const encodeBase64 = (str: string): string => { return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(str)); }
