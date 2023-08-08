@@ -10,7 +10,6 @@ export const encryptoAES = (str: string, originSalt?: string): CryptoType => {
         str,
         secretKey,
         {
-            iv: CryptoJS.enc.Hex.parse(salt),
             padding: CryptoJS.pad.Pkcs7,
     		mode: CryptoJS.mode.CBC
         }
@@ -19,17 +18,16 @@ export const encryptoAES = (str: string, originSalt?: string): CryptoType => {
     return { str: encrypted.toString(), salt: salt }
 }
 export const decryptoAES = (str: string, salt: string): CryptoType => {
-    const encrypted = AES.encrypt(
+    const encrypted = AES.decrypt(
         str,
         secretKey,
         {
-            iv: CryptoJS.enc.Hex.parse(salt),
             padding: CryptoJS.pad.Pkcs7,
     		mode: CryptoJS.mode.CBC
         }
     );
 
-    return { str: encrypted.toString(), salt: salt }
+    return { str: encrypted.toString(CryptoJS.enc.Utf8), salt: salt }
 }
 
 export const encodeBase64 = (str: string): string => { return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(str)); }

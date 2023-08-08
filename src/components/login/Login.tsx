@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { LoginDiv, LoginTable, LoginInput, LoginButton, FindIdButton, FindPwButton, RegisterButton, LoginButtonTd, LoginSubTd, LoginInputTd } from "./Style";
-import { loginCheck, loginUser } from "../../Util/User";
+import { loginUser } from "../../Util/User";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../Contexts/User";
 
 interface LoginInputs extends HTMLFormControlsCollection {
     id: HTMLInputElement;
@@ -13,23 +14,29 @@ interface LoginForm extends HTMLFormElement {
 }
 
 const Login = () => {
+    const { logging, setUserId, setSessionId, setLogging } = useContext(UserContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(logging) {
+            navigate(-1);
+        }
+    }, [logging])
+
     const loginSubmit = async (e: React.FormEvent<LoginForm>) => {
         e.preventDefault();
         const form = e.currentTarget.elements;
-        loginUser(form.id.value, form.pw.value).then(result => {
-            if(result) {
+        loginUser(form.id.value, form.pw.value).then(data => {
+            if(data.test && data.result) {
+                setUserId(data.result.userId)
+                setSessionId(data.result.sessionId)
+                setLogging(true);
                 alert('로그인 성공');
-                navigate('/');
             } else {
                 alert('아이디와 비밀번호를 확인해주세요');
             }
         });
     }
-
-    useEffect(() => {
-        loginCheck().then(result => { if(result) navigate(-1)})
-    })
 
     return (
         <LoginDiv>

@@ -1,7 +1,8 @@
+import { useState, useContext, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { Div } from "../global/StyledElements";
-import { loginCheck } from "../../Util/User";
+import { UserContext } from '../../Contexts/User';
 
 const HeaderDiv = styled(Div)`
     position: absolute;
@@ -14,27 +15,30 @@ const HeaderLink = styled(Link)`
 `;
 
 const Header = () => {
-    const loginAfterElement = (
+    const { logging } = useContext(UserContext);
+    const [element, setElement] = useState<JSX.Element>(<></>)
+
+    const loginBeforeElement = (
         <>
             <HeaderLink to='/login'>로그인</HeaderLink>
             <HeaderLink to='/register'>회원가입</HeaderLink>
         </>
     )
 
-    const loginBeforeElement = (
+    const loginAfterElement = (
         <>
             <HeaderLink to='/logout'>로그아웃</HeaderLink>
         </>
     )
 
-    let printElement = <></>;
-
-    loginCheck().then((result) => { printElement = result ? loginAfterElement : loginBeforeElement})
-
+    useEffect(() => {
+        setElement(logging ? loginAfterElement : loginBeforeElement);
+    }, [])
+    
     return (
         <HeaderDiv>
             <HeaderLink to='/'>홈</HeaderLink>
-            {printElement}
+            {element}
         </HeaderDiv>
     );
 }
