@@ -1,8 +1,7 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { Div } from "../global/StyledElements";
-import { UserContext } from '../../Contexts/User';
 
 const HeaderDiv = styled(Div)`
     position: absolute;
@@ -14,9 +13,12 @@ const HeaderLink = styled(Link)`
     
 `;
 
-const Header = () => {
-    const { logging } = useContext(UserContext);
-    const [element, setElement] = useState<JSX.Element>(<></>)
+interface Props {
+    logging: boolean;
+}
+
+const Header = ({ logging }: Props) => {
+    const [ element, setElement ] = useState<JSX.Element>(<></>)
 
     const loginBeforeElement = (
         <>

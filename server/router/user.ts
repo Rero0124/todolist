@@ -76,8 +76,6 @@ router.put('/login', async (req: Request, res: Response) => {
                     userPw: userInfo.userPw,
                 },
             })
-            console.log(userInfo)
-            console.log(result)
             return res.status(200).json({ message: "user update sessionId success", result: result });
         } else {
             return res.status(400).json({ message: "verification failed", result: null });
@@ -103,8 +101,6 @@ router.put('/logout', async (req: Request, res: Response) => {
                     userId: userInfo.userId,
                 },
             })
-            console.log(userInfo)
-            console.log(result)
             return res.status(200).json({ message: "user update sessionId success", result: result });
         } else {
             return res.status(400).json({ message: "verification failed", result: null });

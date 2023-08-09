@@ -27,7 +27,7 @@ export const loginUser = async (userId: string, userPw: string) => {
             if(result.result.userPw === encryptoResult.str) {
                 const ipData = await fetch('https://geolocation-db.com/json/');
                 const locationIp: clientLocation = await ipData.json();
-                const now = Date.now();
+                const now = new Date().getTime();
                 const sessionStr = locationIp.IPv4 + '_' + now;
                 const sessionId = encryptoAES(sessionStr, result.result.salt).str;
                 userInfo.sessionId = sessionId;
@@ -58,12 +58,14 @@ export const loginCheck = async (userId: string, sessionId: string) => {
         if(result.result.sessionId === sessionId) {
             const ipData = await fetch('https://geolocation-db.com/json/');
             const locationIp: clientLocation = await ipData.json();
-            const now = Date.now();
+            const now = new Date().getTime();
             const sessionStr = locationIp.IPv4 + '_' + now;
             const oldSessionStr = decryptoAES(result.result.sessionId!, result.result.salt).str;
-            if(oldSessionStr.split('_')[0] === locationIp.IPv4 && new Date(parseInt(oldSessionStr.split('_')[1])).valueOf() - now.valueOf() > 3) {
+            if(oldSessionStr.split('_')[0] === locationIp.IPv4 && new Date(parseInt(oldSessionStr.split('_')[1])).getTime() - now < 1000 * 60 * 60 * 24 * 3) {
                 const sessionId = encryptoAES(sessionStr, result.result.salt).str;
                 return { test: true, result: { userId: result.result.userId, sessionId: sessionId, remove: false } };
+            } else {
+                return { test: true, result: { remove: true } };
             }
         }
     } else {

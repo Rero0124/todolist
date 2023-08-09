@@ -1,8 +1,6 @@
-import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { RegisterButton, RegisterButtonTd, RegisterDiv, RegisterInput, RegisterInputTd, RegisterSubTd, RegisterTable } from "./style";
 import { hasId, registerUser } from "../../Util/User";
-import { UserContext } from "../../Contexts/User";
 
 interface RegisterInputs extends HTMLFormControlsCollection {
     id: HTMLInputElement;
@@ -14,16 +12,8 @@ interface RegisterForm extends HTMLFormElement {
 }
 
 const Register = () => {
-    const { logging } = useContext(UserContext);
     const navigate = useNavigate();
-    
-    useEffect(() => {
-        if(logging) {
-            navigate(-1);
-        }
-    }, [])
-    
-    
+
     const registerSubmit = (e: React.FormEvent<RegisterForm>) => {
         e.preventDefault();
         const form = e.currentTarget.elements;
@@ -49,21 +39,23 @@ const Register = () => {
         <RegisterDiv>
             <form id="login" onSubmit={registerSubmit}>
                 <RegisterTable>
-                    <tr>
-                        <RegisterSubTd>아이디</RegisterSubTd>
-                        <RegisterInputTd>
-                            <RegisterInput type="text" name="id" onBlur={checkId}/>
-                        </RegisterInputTd>
-                    </tr>
-                    <tr>
-                        <RegisterSubTd>비밀번호</RegisterSubTd>
-                        <RegisterInputTd><RegisterInput type="password" name="pw" /></RegisterInputTd>
-                    </tr>
-                    <tr>
-                        <RegisterButtonTd colSpan={2}>
-                            <RegisterButton>회원가입</RegisterButton>
-                        </RegisterButtonTd>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <RegisterSubTd>아이디</RegisterSubTd>
+                            <RegisterInputTd>
+                                <RegisterInput type="text" name="id" onBlur={checkId}/>
+                            </RegisterInputTd>
+                        </tr>
+                        <tr>
+                            <RegisterSubTd>비밀번호</RegisterSubTd>
+                            <RegisterInputTd><RegisterInput type="password" name="pw" /></RegisterInputTd>
+                        </tr>
+                        <tr>
+                            <RegisterButtonTd colSpan={2}>
+                                <RegisterButton>회원가입</RegisterButton>
+                            </RegisterButtonTd>
+                        </tr>
+                    </tbody>
                 </RegisterTable>
             </form>
         </RegisterDiv>
