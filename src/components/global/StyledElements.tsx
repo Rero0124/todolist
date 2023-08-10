@@ -13,6 +13,10 @@ export const Div = styled.div`
     padding: 0px;
 `;
 
+export const Span = styled.span`
+    font-size: 12px;
+`
+
 export const P = styled.p`
     font-size: 12px;
 `;

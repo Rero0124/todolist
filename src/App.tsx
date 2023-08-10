@@ -57,7 +57,7 @@ function App() {
 		<AppDiv>
 			<Header logging={ user.logging } />
 			<Routes>
-				<Route path='/' element={<Home />}/>
+				<Route path='/' element={<Home user={user}/>}/>
 				<Route path='/logout' element={<Logout onRemoveUser={onRemoveUser} />}/>
 				<Route path='/login' element={<Login onSetUser={onSetUser} />}/>
 				<Route path='/register' element={<Register />}/>

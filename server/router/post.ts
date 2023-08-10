@@ -13,22 +13,25 @@ const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
     try {
-        let postInfo: PostType = req.body ?? {postId: 0, title: '', content: '', checked: false, authorId: ''};
-        if(postInfo.postId !== 0) {
-            const result: PostType = await prisma.post.create({
+        let postInfo = req.body ?? { content: '', authorId: ''};
+        if(postInfo.authorId) {
+            const result: { postId: number } = await prisma.post.create({
+                select: {
+                    postId: true,
+                },
                 data: {
-                    title: postInfo.title,
+                    title: '',
                     content: postInfo.content,
-                    checked: postInfo.checked,
+                    checked: false,
                     authorId: postInfo.authorId,
                 },
             })
             return res.status(200).json({ message: "post create success", result: result });
         } else {
-            return res.status(400).json({ message: "verification failed" });
+            return res.status(400).json({ message: "verification failed", result: null });
         }
     } catch {
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", result: null });
     }
 })
 
@@ -48,10 +51,32 @@ router.put('/', async (req: Request, res: Response) => {
             })
             return res.status(200).json({ message: "post update success", result: result });
         } else {
-            return res.status(400).json({ message: "verification failed" });
+            return res.status(400).json({ message: "verification failed", result: null });
         }
     } catch {
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", result: null});
+    }
+})
+
+router.patch('/', async (req: Request, res: Response) => {
+    try {
+        let postInfo = req.body ?? { postId: 0, checked: false };
+        console.log(postInfo)
+        if(postInfo.postId !== 0) {
+            const result: PostType = await prisma.post.update({
+                data: {
+                    checked: postInfo.checked,
+                },
+                where: {
+                    postId: postInfo.postId,
+                },
+            })
+            return res.status(200).json({ message: "post update success", result: result });
+        } else {
+            return res.status(400).json({ message: "verification failed", result: null });
+        }
+    } catch {
+        return res.status(500).json({ message: "Internal server error", result: null});
     }
 })
 
@@ -66,10 +91,10 @@ router.delete('/', async (req: Request, res: Response) => {
             })
             return res.status(200).json({ message: "post create success", result: result });
         } else {
-            return res.status(400).json({ message: "verification failed" });
+            return res.status(400).json({ message: "verification failed", result: null });
         }
     } catch {
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", result: null });
     }
 })
 
@@ -84,10 +109,10 @@ router.get('/:postId', async (req: Request, res: Response) => {
             })
             return res.status(200).json({ message: "post get success", result: result });
         } else {
-            return res.status(400).json({ message: "verification failed" });
+            return res.status(400).json({ message: "verification failed", result: null });
         }
     } catch {
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", result: null });
     }
 })
 
@@ -95,17 +120,23 @@ router.get('/list/:authorId', async (req: Request, res: Response) => {
     try {
         let authorId = req.params.authorId ?? '';
         if(authorId) {
-            const result: PostType[] = await prisma.post.findMany({
+            const result: {title: string, content: string, checked: boolean}[] = await prisma.post.findMany({
+                select: {
+                    postId: true,
+                    title: true,
+                    content: true,
+                    checked: true,
+                },
                 where: {
                     authorId: authorId,
                 },
             })
             return res.status(200).json({ message: "post get list success", result: result });
         } else {
-            return res.status(400).json({ message: "verification failed" });
+            return res.status(400).json({ message: "verification failed", result: null });
         }
     } catch {
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", result: null });
     }
 })
 
